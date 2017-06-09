@@ -1,0 +1,14 @@
+{
+	"Disable": [
+		"gocyclo",
+		"aligncheck",
+		"golint",
+		"gas",
+		"gotype"
+	],
+	"Exclude": [
+		"evalSha1 is unused",
+		"error should have signature MarshalXML\\(",
+		"/usr/local/go/src"
+	]
+}
