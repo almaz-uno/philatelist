@@ -20,7 +20,7 @@ const executionName = "philatelist"
 var RootCmd = &cobra.Command{
 	Use:   executionName,
 	Short: "This program collects images from various sources by location",
-	Long:  `Usage is: ` + executionName + ` run`,
+	Long:  `Philatelist is a RESTful server for searching images based on location. For running server just use appropriate command.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
