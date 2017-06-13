@@ -70,4 +70,4 @@ info:
 	go env
 
 gocov-report: $(GOCOV) deps
-	gocov test ./... | gocov report
+	$(GOCOV) test -race ./... | $(GOCOV) report

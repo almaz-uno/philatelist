@@ -1,6 +1,7 @@
 {
 	"Disable": [
-		"aligncheck"
+		"aligncheck",
+		"gotype"
 	],
 	"Exclude": [
 		"/usr/local/go/src"
