@@ -11,7 +11,7 @@ pipelines:
           - mkdir -pv "${PACKAGE_PATH}"
           - tar -cO --exclude-vcs --exclude=bitbucket-pipelines.yml . | tar -xv -C "${PACKAGE_PATH}"
           # duet
-          - cd "${PACKAGE_PATH}/duet"
+          - cd "${PACKAGE_PATH}"
           - export BUILD_COMMIT=${BITBUCKET_COMMIT}
           - export BUILD_BRANCH=${BITBUCKET_BRANCH}
           - make info clean lint gocov-report distrib
