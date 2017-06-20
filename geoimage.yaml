@@ -1,0 +1,25 @@
+# reference seciton is only for anchors. An yaml anchors can be used as reference to a value.
+reference:
+  api-key:
+    kovrov: &kovrov AIzaSyBZeYbJ6pMNUy-VdLVxnhBCwYcWxSrZZAE
+# configuration
+run:
+  # Interface and port to listen RESTful interface 
+  listen: 192.168.2.50:9080
+  google:
+    # Google API key. To gain new one, please visit https://support.google.com/googleapi/answer/6158862
+    key: *kovrov
+    # timeout to Google API invocation
+    # Value must be parsable with `time.ParseDuration` function.
+    timeout: 30s
+log:
+  # logrus will log messages in this file
+  file: /tmp/geoimage/geoimage.log
+  # level from `debug` to `panic`. Plase, use `info` or higher in normal situation.
+  # panic
+  # fatal
+  # error
+  # warn
+  # info
+  # debug 
+  level: debug

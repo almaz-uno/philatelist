@@ -4,26 +4,27 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	homedir "github.com/mitchellh/go-homedir"
+
+	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
 
-const executionName = "philatelist"
+const executionName = "geoimage"
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   executionName,
-	Short: "This program collects images from various sources by location",
-	Long:  `Philatelist is a RESTful server for searching images based on location. For running server just use appropriate command.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "This program collects images from Google",
+	Long: `Geoimage is a RESTful server for searching images based on location. 
+It uses Google API for do this.`,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -37,15 +38,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.t.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/."+executionName+".yaml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -68,8 +61,21 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		log.Println("Using config file:", viper.ConfigFileUsed())
+		log.Info("Using config file:", viper.ConfigFileUsed())
+	} else {
+		log.WithError(err).Warn("Error while loading config file", viper.ConfigFileUsed())
+		os.Exit(1)
 	}
+}
+
+// exitHook waits for signals `syscall.SIGINT` and `syscall.SIGTERM` and exits from process when caught one of them
+func exitHook() {
+	// awaiting for termination
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	log.Println("Waiting exit signal...")
+	sig := <-sigs
+	log.Infof("Caught signal '%v'. Exiting...", sig)
+	os.Exit(0)
 }
