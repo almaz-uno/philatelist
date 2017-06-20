@@ -7,11 +7,17 @@ import (
 	"testing"
 	"time"
 
+	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestSearcher(t *testing.T) {
+	assert.Implements(t, (*imagesearch.Searcher)(nil), new(API), "google.API must implements interface!")
+}
 
 func TestTypes(t *testing.T) {
 

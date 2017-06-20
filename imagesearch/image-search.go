@@ -1,4 +1,4 @@
-// Packege contains common structs, interface and other useful stuff for image searching process
+// Packege imagesearch contains common structs, interface and other useful stuff for image searching process
 package imagesearch
 
 import "strings"
@@ -9,7 +9,7 @@ type (
 		// SearchByQuery returns images URLs connected with palace described by the `query`
 		SearchByQuery(query string) (urls []string, err error)
 		// SearchByPlaceId returns images URLs connected with palace described by the `placeid`
-		SearchByPlaceId(placeid string) (urls []string, err error)
+		SearchByPlaceID(placeid string) (urls []string, err error)
 	}
 
 	// CumulativeSearcher implements `Searcher` interface with using set of searchers
@@ -21,7 +21,7 @@ type (
 )
 
 func (errs troubles) Error() string {
-	var strRep []string = make([]string, len(errs))
+	var strRep = make([]string, len(errs))
 	for i, e := range errs {
 		strRep[i] = e.Error()
 	}
@@ -45,20 +45,20 @@ func (s *CumulativeSearcher) Add(searcher Searcher) {
 // but error can be printed to log, for example
 // `urls` should be tested against `len(urls) > 0` for output to client
 func (s *CumulativeSearcher) SearchByQuery(query string) (urls []string, err error) {
-	var troubles troubles
+	var errs troubles
 	for _, serch := range s.searchers {
 		u, e := serch.SearchByQuery(query)
 		urls = append(urls, u...)
 		if e != nil {
-			troubles = append(troubles, e)
+			errs = append(errs, e)
 		}
 	}
 
 	switch {
-	case len(troubles) == 1:
-		err = troubles[0]
-	case len(troubles) > 1:
-		err = troubles
+	case len(errs) == 1:
+		err = errs[0]
+	case len(errs) > 1:
+		err = errs
 	}
 
 	return
@@ -68,21 +68,21 @@ func (s *CumulativeSearcher) SearchByQuery(query string) (urls []string, err err
 // Method can returns errors and non-nil urls simultaneously. In that case urls can be safety used,
 // but error can be printed to log, for example
 // `urls` should be tested against `len(urls) > 0` for output to client
-func (s *CumulativeSearcher) SearchByPlaceId(placeid string) (urls []string, err error) {
-	var troubles troubles
+func (s *CumulativeSearcher) SearchByPlaceID(placeid string) (urls []string, err error) {
+	var errs troubles
 	for _, serch := range s.searchers {
-		u, e := serch.SearchByPlaceId(placeid)
+		u, e := serch.SearchByPlaceID(placeid)
 		urls = append(urls, u...)
 		if e != nil {
-			troubles = append(troubles, e)
+			errs = append(errs, e)
 		}
 	}
 
 	switch {
-	case len(troubles) == 1:
-		err = troubles[0]
-	case len(troubles) > 1:
-		err = troubles
+	case len(errs) == 1:
+		err = errs[0]
+	case len(errs) > 1:
+		err = errs
 	}
 
 	return

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -52,6 +54,10 @@ func (s *testSearcher) SearchByPlaceId(placeid string) (urls []string, err error
 func (s *testSearcher) reset() {
 	s.query = ""
 	s.placeid = ""
+}
+
+func TestSearcher(t *testing.T) {
+	assert.Implements(t, (*imagesearch.Searcher)(nil), new(CumulativeSearcher), "imagesearcher.CumulativeSearcher must implements interface!")
 }
 
 func TestCumulativeSearcher(t *testing.T) {

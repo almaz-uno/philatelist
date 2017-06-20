@@ -1,4 +1,4 @@
-// Package grant access to certain API Google operations
+// Package google grant access to certain API Google operations
 package google
 
 import (
