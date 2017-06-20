@@ -1,0 +1,47 @@
+# Ignore any files without an extension
+*
+
+!*.*
+
+!Makefile
+
+!.gitignore
+!*Dockerfile
+
+# Ignore temporary files
+*~
+
+# Unignore all dirs
+!*/
+
+# ignore mac crap
+.DS_Store
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+build
+
+# Folders
+_obj
+_test
+
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+_testmain.go
+
+*.exe
+*.test
+*.prof
+
+# Eclipse IDE files
+.project
+.*.html
+
+# log files
+*.log
