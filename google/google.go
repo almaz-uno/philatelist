@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"time"
 
+	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/valyala/fasthttp"
 )
@@ -99,6 +101,49 @@ func New(apiKey string) *API {
 		apiKey:  apiKey,
 		Timeout: 30 * time.Second,
 	}
+}
+
+// SearchByPlaceID searches images for specified `placeid` with Google API.
+// It searches up to 10, please see google documentation for details
+// It returns an empty (`len(urls) == 0`) slice if there are no found images for `placeid`
+func (g *API) SearchByPlaceID(placeid string) (urls []string, err error) {
+	res, err := g.Details(placeid)
+	if err != nil {
+		return
+	}
+
+	for _, photo := range res.Result.Photos {
+		urls = append(urls, g.Photo(photo))
+	}
+
+	return
+}
+
+// SearchByQuery searches images for address denoted by `query` with Google API.
+// At the first, this method searches Google placeids for the address,
+// then it uses `SearchByPlaceID` for searching photos.
+// It returns an empty (`len(urls) == 0`) slice if there are no found images for the address.
+func (g *API) SearchByQuery(query string) (urls []string, err error) {
+	var errs imagesearch.Troubles
+	res, err := g.TextSearch(query)
+	if err != nil {
+		return
+	}
+
+	for _, gr := range res.Results {
+		// we are using placeid only
+		u, e := g.SearchByPlaceID(gr.PlaceID)
+		if e != nil {
+			errs = append(errs, e)
+		}
+
+		urls = append(urls, u...)
+
+	}
+
+	err = errs.AsError()
+
+	return
 }
 
 // Photo returns an URL, that point to the selected image with original maxwidth

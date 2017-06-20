@@ -17,15 +17,27 @@ type (
 		searchers []Searcher
 	}
 
-	troubles []error
+	// Troubles just represents a number of errors
+	Troubles []error
 )
 
-func (errs troubles) Error() string {
+func (errs Troubles) Error() string {
 	var strRep = make([]string, len(errs))
 	for i, e := range errs {
 		strRep[i] = e.Error()
 	}
 	return strings.Join(strRep, ", ")
+}
+
+// AsError casts Troubles to an error or nil, if there are no errors
+func (errs Troubles) AsError() error {
+	switch {
+	case len(errs) == 1:
+		return errs[0]
+	case len(errs) > 1:
+		return errs
+	}
+	return nil
 }
 
 // Add allows to add a searcher to the searchers pool
@@ -45,7 +57,7 @@ func (s *CumulativeSearcher) Add(searcher Searcher) {
 // but error can be printed to log, for example
 // `urls` should be tested against `len(urls) > 0` for output to client
 func (s *CumulativeSearcher) SearchByQuery(query string) (urls []string, err error) {
-	var errs troubles
+	var errs Troubles
 	for _, serch := range s.searchers {
 		u, e := serch.SearchByQuery(query)
 		urls = append(urls, u...)
@@ -54,22 +66,17 @@ func (s *CumulativeSearcher) SearchByQuery(query string) (urls []string, err err
 		}
 	}
 
-	switch {
-	case len(errs) == 1:
-		err = errs[0]
-	case len(errs) > 1:
-		err = errs
-	}
+	err = errs.AsError()
 
 	return
 }
 
-// SearchByPlaceId ищет изображения с помощью заданных searchers
+// SearchByPlaceID ищет изображения с помощью заданных searchers
 // Method can returns errors and non-nil urls simultaneously. In that case urls can be safety used,
 // but error can be printed to log, for example
 // `urls` should be tested against `len(urls) > 0` for output to client
 func (s *CumulativeSearcher) SearchByPlaceID(placeid string) (urls []string, err error) {
-	var errs troubles
+	var errs Troubles
 	for _, serch := range s.searchers {
 		u, e := serch.SearchByPlaceID(placeid)
 		urls = append(urls, u...)
@@ -78,12 +85,7 @@ func (s *CumulativeSearcher) SearchByPlaceID(placeid string) (urls []string, err
 		}
 	}
 
-	switch {
-	case len(errs) == 1:
-		err = errs[0]
-	case len(errs) > 1:
-		err = errs
-	}
+	err = errs.AsError()
 
 	return
 }

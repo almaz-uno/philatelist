@@ -15,9 +15,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSearcher(t *testing.T) {
-	assert.Implements(t, (*imagesearch.Searcher)(nil), new(API), "google.API must implements interface!")
-}
+const (
+	kovrovKey  = "AIzaSyBZeYbJ6pMNUy-VdLVxnhBCwYcWxSrZZAE"
+	testAPIKey = kovrovKey
+)
 
 func TestTypes(t *testing.T) {
 
@@ -396,15 +397,12 @@ func TestGoogleApi(t *testing.T) {
 		log.SetLevel(log.DebugLevel)
 		log.SetOutput(os.Stdout)
 	}
-	// https://developers.google.com/places/place-id
-	const kovrovKey = "AIzaSyBZeYbJ6pMNUy-VdLVxnhBCwYcWxSrZZAE"
-	apiKey := kovrovKey
 
 	t.Run("details-auckland", func(t *testing.T) {
 		// Auckland
 		const auckland = "ChIJ--acWvtHDW0RF5miQ2HvAAU"
 
-		subj := New(apiKey)
+		subj := New(testAPIKey)
 		subj.Timeout = time.Minute
 
 		res, err := subj.Details(auckland)
@@ -425,7 +423,7 @@ func TestGoogleApi(t *testing.T) {
 		// Novotushinskaya ulitsa
 		const novotushinskaya = "ChIJhSOnan5HtUYR5dkSIiDaj-U"
 
-		subj := New(apiKey)
+		subj := New(testAPIKey)
 		subj.Timeout = time.Minute
 
 		res, err := subj.Details(novotushinskaya)
@@ -440,7 +438,7 @@ func TestGoogleApi(t *testing.T) {
 
 	t.Run("photos-by-textsearch-auckland", func(t *testing.T) {
 
-		subj := New(apiKey)
+		subj := New(testAPIKey)
 		subj.Timeout = time.Minute
 
 		query := "New Zeland, Auckland"
@@ -455,13 +453,13 @@ func TestGoogleApi(t *testing.T) {
 
 		require.True(t, len(res.Results) > 0 && len(res.Results[0].Photos) > 0, "There is no photograph for the place")
 
-		t.Logf("%v?key=%v&photoreference=%v&maxwidth=%v", photoServiceURL, apiKey, res.Results[0].Photos[0].PhotoReference, res.Results[0].Photos[0].Width)
+		t.Logf("%v?key=%v&photoreference=%v&maxwidth=%v", photoServiceURL, testAPIKey, res.Results[0].Photos[0].PhotoReference, res.Results[0].Photos[0].Width)
 
 	})
 
 	t.Run("photos-by-textsearch-custom", func(t *testing.T) {
 
-		subj := New(apiKey)
+		subj := New(testAPIKey)
 		subj.Timeout = time.Minute
 
 		query := "Новое Тушино, Путилково"
@@ -475,10 +473,42 @@ func TestGoogleApi(t *testing.T) {
 
 		require.True(t, len(res.Results) > 0 && len(res.Results[0].Photos) > 0, "There is no photograph for `"+query+"`")
 
-		expectedPhotoURL := fmt.Sprintf("%v?key=%v&photoreference=%v&maxwidth=%v", photoServiceURL, apiKey, res.Results[0].Photos[0].PhotoReference, res.Results[0].Photos[0].Width)
+		expectedPhotoURL := fmt.Sprintf("%v?key=%v&photoreference=%v&maxwidth=%v", photoServiceURL, testAPIKey, res.Results[0].Photos[0].PhotoReference, res.Results[0].Photos[0].Width)
 		assert.Equal(t, expectedPhotoURL, subj.Photo(res.Results[0].Photos[0]))
 
 		t.Logf(subj.Photo(res.Results[0].Photos[0]))
+
+	})
+}
+
+func TestSearcher(t *testing.T) {
+
+	t.Run("interface", func(t *testing.T) {
+		assert.Implements(t, (*imagesearch.Searcher)(nil), new(API))
+	})
+
+	t.Run("SearchByQuery-auckland", func(t *testing.T) {
+		subj := New(testAPIKey)
+		urls, err := subj.SearchByQuery("Auckland, New Zeland")
+		require.NoError(t, err)
+
+		assert.Len(t, urls, 10)
+
+		for _, u := range urls {
+			t.Log(u)
+		}
+
+	})
+	t.Run("SearchByQuery-domodedovo", func(t *testing.T) {
+		subj := New(testAPIKey)
+		urls, err := subj.SearchByQuery("Domodedovo town, Russia")
+		require.NoError(t, err)
+
+		assert.Len(t, urls, 10)
+
+		for _, u := range urls {
+			t.Log(u)
+		}
 
 	})
 }
