@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -38,14 +36,14 @@ var (
 
 func (s *testSearcher) SearchByQuery(query string) (urls []string, err error) {
 	if s.query != "" {
-		panic("call reset()!")
+		panic("reset() invocation is required!")
 	}
 	s.query = query
 	return s.urls, s.err
 }
-func (s *testSearcher) SearchByPlaceId(placeid string) (urls []string, err error) {
+func (s *testSearcher) SearchByPlaceID(placeid string) (urls []string, err error) {
 	if s.placeid != "" {
-		panic("call reset()!")
+		panic("reset() invocation is required!")
 	}
 	s.placeid = placeid
 	return s.urls, s.err
@@ -57,7 +55,7 @@ func (s *testSearcher) reset() {
 }
 
 func TestSearcher(t *testing.T) {
-	assert.Implements(t, (*imagesearch.Searcher)(nil), new(CumulativeSearcher), "imagesearcher.CumulativeSearcher must implements interface!")
+	assert.Implements(t, (*Searcher)(nil), new(CumulativeSearcher), "imagesearcher.CumulativeSearcher must implements interface!")
 }
 
 func TestCumulativeSearcher(t *testing.T) {
@@ -170,7 +168,7 @@ func TestCumulativeSearcher(t *testing.T) {
 		subj.Add(s1)
 		subj.Add(s2)
 
-		urls, err := subj.SearchByPlaceId("placeid")
+		urls, err := subj.SearchByPlaceID("placeid")
 		assert.NoError(t, err)
 
 		assert.Len(t, urls, 5)
@@ -187,7 +185,7 @@ func TestCumulativeSearcher(t *testing.T) {
 		subj.Add(s3)
 		subj.Add(s4)
 
-		urls, err := subj.SearchByPlaceId("placeid")
+		urls, err := subj.SearchByPlaceID("placeid")
 		assert.Error(t, err)
 		assert.Len(t, err, 2)
 		assert.Equal(t, "Etalon error1, Etalon error2", err.Error())
@@ -204,7 +202,7 @@ func TestCumulativeSearcher(t *testing.T) {
 		subj.Add(s1)
 		subj.Add(s3)
 
-		urls, err := subj.SearchByPlaceId("placeid")
+		urls, err := subj.SearchByPlaceID("placeid")
 		assert.Error(t, err)
 		assert.Equal(t, errorEtalon1, err)
 		assert.Len(t, urls, 2)
@@ -227,7 +225,7 @@ func TestCumulativeSearcher(t *testing.T) {
 
 		require.Len(t, subj.searchers, 4)
 
-		urls, err := subj.SearchByPlaceId("placeid")
+		urls, err := subj.SearchByPlaceID("placeid")
 
 		assert.Error(t, err)
 		assert.Len(t, err, 2)

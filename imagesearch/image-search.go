@@ -1,4 +1,4 @@
-// Packege imagesearch contains common structs, interface and other useful stuff for image searching process
+// Package imagesearch contains common structs, interface and other useful stuff for image searching process
 package imagesearch
 
 import "strings"
@@ -8,7 +8,7 @@ type (
 	Searcher interface {
 		// SearchByQuery returns images URLs connected with palace described by the `query`
 		SearchByQuery(query string) (urls []string, err error)
-		// SearchByPlaceId returns images URLs connected with palace described by the `placeid`
+		// SearchByPlaceID returns images URLs connected with palace described by the `placeid`
 		SearchByPlaceID(placeid string) (urls []string, err error)
 	}
 

@@ -28,8 +28,6 @@ COPY_FILES =
 
 LDFLAGS	= -ldflags "-X $(PKG)/cmd.buildVersion=${VERSION}  -X $(PKG)/cmd.buildTime=${BUILD_TIME} -X $(PKG)/cmd.buildCommit=${BUILD_COMMIT} -X $(PKG)/cmd.buildBranch=${BUILD_BRANCH}"
 
-VERSION_FILES = duet-proxy/cmd/version.go
-
 .PHONY: clean deps test lint $(GOLINT) distrib install info $(PKGS) $(COPY_FILES)
 
 $(GOLINT):
