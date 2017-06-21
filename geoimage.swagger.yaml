@@ -40,6 +40,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Image"
+        403:
+          description: some parametes are invalid
         404:
           description: images not found
   /images/google-place-id:
@@ -64,6 +66,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Image"
+        403:
+          description: some parametes are invalid
         404:
           description: images not found
 # definitions
