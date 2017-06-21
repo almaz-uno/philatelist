@@ -43,7 +43,7 @@ func NewRestService(rootSearcher Searcher) *RestService {
 }
 
 // RegisterOperations registers operations in echo instance
-func (rs *RestService) RegisterOperations(e *echo.Echo) (err error) {
+func (rs *RestService) RegisterOperations(e *echo.Echo) {
 	log.Info("Register operations...")
 	log.Info("Registring ", basePath+addressTextPath)
 	e.GET(rs.basePath+addressTextPath, rs.doAddressText)
