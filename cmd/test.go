@@ -24,7 +24,7 @@ var testCmd = &cobra.Command{
 Moreover, it demonstrates creation client of the service.
 Please warn, service must be running while this command issues.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Infof("test on %v is called", baseUrl)
+		log.Infof("test on %v is called", baseURL)
 
 		if placeidRequest == "" && queryRequest == "" {
 			log.Error("Please, specify query or placeid")
@@ -32,11 +32,11 @@ Please warn, service must be running while this command issues.`,
 
 		if placeidRequest != "" {
 			log.Info("Looking up for placeid=", placeidRequest)
-			lookup(baseUrl + googlePlaceIDPath + "?placeid=" + url.QueryEscape(placeidRequest))
+			lookup(baseURL + googlePlaceIDPath + "?placeid=" + url.QueryEscape(placeidRequest))
 		}
 		if queryRequest != "" {
 			log.Info("Looking up for query=", queryRequest)
-			lookup(baseUrl + addressTextPath + "?query=" + url.QueryEscape(queryRequest))
+			lookup(baseURL + addressTextPath + "?query=" + url.QueryEscape(queryRequest))
 		}
 
 		log.Info("Done!")
@@ -49,14 +49,14 @@ const (
 )
 
 var (
-	baseUrl        string
+	baseURL        string
 	queryRequest   string
 	placeidRequest string
 )
 
 func init() {
 	RootCmd.AddCommand(testCmd)
-	testCmd.PersistentFlags().StringVarP(&baseUrl, "base-url", "b", "http://localhost:9080/v1", "Base target url")
+	testCmd.PersistentFlags().StringVarP(&baseURL, "base-url", "b", "http://localhost:9080/v1", "Base target url")
 
 	testCmd.PersistentFlags().StringVarP(&queryRequest, "query", "q", "", "Address query to looking images")
 	testCmd.PersistentFlags().StringVarP(&placeidRequest, "placeid", "p", "", "Google placeid to looking images")
