@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  description: |
+    This is an application for searching images, based on address or Google placeid. At now,
+    the service uses **Google API**.
+  version: 1.0.0
+  title: Geoimage
+  contact:
+    email: maksim.kovrov@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: kovrov.net.ru:9080
+basePath: /v1
+tags:
+- name: image
+  description: Searching images
+schemes:
+- "http"
+paths:
+  /images/address-text:
+    get:
+      tags:
+      - image
+      summary: Searcing images based on address text
+      description: This operation searches images based on address text
+      operationId: searchByText
+      produces:
+      - application/json
+      parameters:
+      - name: query
+        in: query
+        description: Free-from address description
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Image"
+        403:
+          description: some parametes are invalid
+        404:
+          description: images not found
+  /images/google-place-id:
+    get:
+      tags:
+      - "image"
+      summary: Searcing images based on Google placeid
+      description: This operation searches images based on Google placeid
+      operationId: searchByPlaceid
+      produces:
+      - application/json
+      parameters:
+      - name: placeid
+        in: query
+        description: A valid Google placeid
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Image"
+        403:
+          description: some parametes are invalid
+        404:
+          description: images not found
+# definitions
+definitions:
+  Image:
+    type: object
+    discriminator: imagesearch.Image
+    properties:
+      url:
+        type: string
