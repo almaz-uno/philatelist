@@ -14,7 +14,7 @@ run:
     timeout: 30s
 log:
   # logrus will log messages in this file
-  file: /tmp/geoimage/geoimage.log
+  file: /tmp/philatelist/philatelist.log
   # level from `debug` to `panic`. Plase, use `info` or higher in normal situation.
   # panic
   # fatal

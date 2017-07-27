@@ -29,7 +29,7 @@ BUILD_COMMIT :=${BUILD_COMMIT}
 BUILD_BRANCH :=${BUILD_BRANCH}
 
 PKGS = bitbucket.org/CuredPlumbum/philatelist
-COPY_FILES = geoimage.yaml geoimage.swagger.yaml
+COPY_FILES = philatelist.yaml philatelist.swagger.yaml
 
 LDFLAGS	= -ldflags "-X $(PKG)/cmd.buildVersion=${VERSION}  -X $(PKG)/cmd.buildTime=${BUILD_TIME} -X $(PKG)/cmd.buildCommit=${BUILD_COMMIT} -X $(PKG)/cmd.buildBranch=${BUILD_BRANCH}"
 
