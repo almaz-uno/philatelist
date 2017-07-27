@@ -1,9 +1,31 @@
 {
 	"Disable": [
 		"aligncheck",
-		"gotype"
+		"gotype",
+		"lll",
+		"misspell",
+		"safesql",
+		"unused",
+		"gosimple",
+		"staticcheck",
+		"dupl"
+	],
+	"Enable": [
+		"megacheck",
+		"ineffassign",
+		"unconvert",
+		"deadcode",
+		"interfacer",
+		"unparam",
+		"structcheck",
+		"goconst",
+		"goimports",
+		"varcheck",
+		"errcheck",
+		"gas",
+		"gocyclo",
+		"golint"
 	],
 	"Exclude": [
-		"/usr/local/go/src"
 	]
 }

@@ -49,7 +49,6 @@ func (s *CumulativeSearcher) Add(searcher Searcher) {
 		}
 	}
 	s.searchers = append(s.searchers, searcher)
-	return
 }
 
 // SearchByQuery searches images with searchers those added with `Add` method

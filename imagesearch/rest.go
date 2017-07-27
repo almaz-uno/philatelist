@@ -49,7 +49,6 @@ func (rs *RestService) RegisterOperations(e *echo.Echo) {
 	e.GET(rs.basePath+addressTextPath, rs.doAddressText)
 	log.Info("Registring ", basePath+googlePlaceIDPath)
 	e.GET(rs.basePath+googlePlaceIDPath, rs.doGooglePlaceID)
-	return
 }
 
 func (rs *RestService) doAddressText(cxt echo.Context) (err error) {

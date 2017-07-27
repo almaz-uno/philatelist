@@ -13,9 +13,14 @@ GOCOV     = gocov
 SOURCEDIR = .
 SOURCES := $(shell find $(SOURCEDIR) -name '*.go')
 BUILDDIR = build
+DISTRDIR = $(BUILDDIR)/distr
 
 GOLINTERCFG=.gometalinter.json
 GOLINTFLAGS=--deadline=300s -t --vendored-linters
+CHECKSTYLE_FILE=$(BUILDDIR)/gometalinter/checkstyle-result.xml
+GOLINTER_SUPPRESS_ERR=
+
+GOCOV_COVER_XML=$(BUILDDIR)/gocov/coverage.xml
 
 VERSION      := v1.0.0
 BUILD_TIME   := $(shell date +%FT%T%z)
@@ -36,9 +41,15 @@ $(GOLINT):
 
 $(GOCOV):
 	$(GOGET) -u github.com/axw/gocov/gocov
+	$(GOGET) -u github.com/axw/gocov/...
+	$(GOGET) -u github.com/AlekSi/gocov-xml
 
 lint: deps $(GOLINT)
-	$(GOLINT) $(GOLINTFLAGS) --config=$(GOLINTERCFG) ./...
+	$(GOLINT) $(GOLINTFLAGS) --config=$(GOLINTERCFG) ./...;$(GOLINTER_SUPPRESS_ERR)
+
+lint-checkstyle: deps $(GOLINT)
+	mkdir -p $(dir $(CHECKSTYLE_FILE))
+	$(GOLINT) $(GOLINTFLAGS) --checkstyle --config=$(GOLINTERCFG) ./... > $(CHECKSTYLE_FILE);$(GOLINTER_SUPPRESS_ERR)
 
 clean:
 	go clean
@@ -55,12 +66,13 @@ build: $(SOURCES) deps $(PKGS)
 $(PKGS):
 	$(eval PKG := $@)
 	$(eval OUT := $(notdir $@))
-	$(GOBUILD) $(LDFLAGS) -o $(BUILDDIR)/$(OUT) $(PKG)
+	$(GOBUILD) $(LDFLAGS) -o $(DISTRDIR)/$(OUT) $(PKG)
 
 distr: build $(COPY_FILES)
 
 $(COPY_FILES):
-	cp $@ $(BUILDDIR)/
+	mkdir -p $(DISTRDIR)
+	cp $@ $(DISTRDIR)/
 
 info:
 	env
@@ -69,3 +81,7 @@ info:
 
 gocov-report: $(GOCOV) deps
 	$(GOCOV) test -race ./... | $(GOCOV) report
+
+gocov-cover-xml: $(GOCOV) deps
+	mkdir -p $(dir $(GOCOV_COVER_XML))
+	$(GOCOV) test -race ./... | gocov-xml > $(GOCOV_COVER_XML)

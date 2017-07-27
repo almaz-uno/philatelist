@@ -1,35 +1,48 @@
 # Philatelist
+Philatelist is a RESTful server, that allows searching images in web by address or Google placeid. For this, it uses Google API at now.
 
-Philatelist is a RESTful server, that allows searching images in web by location or Google placeid.
+## Building
 
-## the task
-> for the next project, i need something quite interesting =) i need a REST API that i can provide an address or google placeid to, and then get back a list of images in that area 
+Before compiling, please:
 
+1. Tune GO environment (setup `$GOROOT`, `$GOPATH` environment variables)
+2. Clone repository in `$GOPATH/src`
 
-> to start with, i would like to see if we can find some free images on the internet to fill this, perhaps using google? or picasa? or something like that
-then, later, we can perhaps add a street view option
-
-> but for now lets stick to just images from the region
-the real purpose of this project is for a deal comparison website, and the images will be used as a background in the site
-
-> so when the customer enters their address into the site, the site will have images from the customer's area on the site
-to make the site feel more local and more customised for the user
-
-> the API must be very easy to use.. for example:
-
-`GET /api/v1/images/address-text?address=20+kelmarna+avenue,+ponsonby`
-
-> or 
-
-
-`GET /api/v1/images/google-place-id?placeid=xxxxxxxx`
-
-> and the response should be something like:
-
+To compile, just type:
+```sh
+cd $GOPATH/src/bitbucket.org/CuredPlumbum/philatelist
+make distr
 ```
-[
-{ url: "http://picasa.com/aaaa1" },
-{ url: "http://picasa.com/aaaa2" },
-{ url: "http://picasa.com/aaaa3" }
-]
+
+Assembled files will be located at `$GOPATH/src/bitbucket.org/CuredPlumbum/philatelist/build`
+
+To lint, test and coverage, type:
+```sh
+cd $GOPATH/src/bitbucket.org/CuredPlumbum/philatelist
+make lint gocov-report
 ```
+
+
+## Running
+
+After compiling, copy and correct [philatelist.yaml](philatelist.yaml) file.
+Most of parameters can be specified in yml-file or via command line interface.
+Please, consider to review [philatelist.yaml](philatelist.yaml) for each parameter description.
+Also, you can get additional information, just use `--help` CLI switch.
+
+Please, use your own Google API key. Visit https://support.google.com/googleapi/answer/6158862 for information.
+
+After running, you can use browser to inspect API:
+
+For example (assume, the service is listening on localhost:9080):
+
+1. http://localhost:9080/v1/images/address-text?query=Auckland
+2. http://localhost:9080/v1/images/google-place-id?placeid=ChIJyWEHuEmuEmsRm9hTkapTCrk
+
+# Writing RESTful client
+
+Please, consider to review Swagger specification file [philatelist.swagger.yaml](philatelist.swagger.yaml) for service description 
+or client creation.
+
+Philatelist supports test invocation. Just review [test.go](cmd/test.go) file. It can be base for client creation. 
+

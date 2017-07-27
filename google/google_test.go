@@ -417,9 +417,9 @@ func TestGoogleApi(t *testing.T) {
 
 	t.Run("details-by-placeid-custom", func(t *testing.T) {
 		// ulitsa Krzhizhanovskogo, Moscow
-		const krzhizhanovskogoStreet = "ChIJIY8uUsBMtUYRdCGdlBVZxlU"
+		const krzhizhanovskogoStreet = "ChIJIY8uUsBMtUYRdCGdlBVZxlU" // nolint: megacheck
 		// sanatoriya Podmoskovie
-		const sanatoriyaPodmoskovie = "ChIJVVVVVdigSkERIUYqip8z7OU"
+		const sanatoriyaPodmoskovie = "ChIJVVVVVdigSkERIUYqip8z7OU" // nolint: megacheck
 		// Novotushinskaya ulitsa
 		const novotushinskaya = "ChIJhSOnan5HtUYR5dkSIiDaj-U"
 
