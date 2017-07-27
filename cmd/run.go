@@ -12,8 +12,8 @@ import (
 	"bitbucket.org/CuredPlumbum/philatelist/google"
 	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/labstack/echo"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

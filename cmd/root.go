@@ -10,14 +10,14 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
 
-const executionName = "geoimage"
+const executionName = "philatelist"
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{

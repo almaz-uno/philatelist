@@ -31,7 +31,7 @@ func TestRegisterOperations(t *testing.T) {
 
 	// Test against swagger specification
 	swaggerSpecFile := tu.EvalPath("/iqhive/src/bitbucket.org/CuredPlumbum/philatelist/imagesearch",
-		"/iqhive/src/bitbucket.org/CuredPlumbum/philatelist/geoimage.swagger.yaml")
+		"/iqhive/src/bitbucket.org/CuredPlumbum/philatelist/philatelist.swagger.yaml")
 
 	specBytes, err := ioutil.ReadFile(swaggerSpecFile)
 	require.NoError(t, err)

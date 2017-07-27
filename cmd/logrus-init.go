@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	lumberjack "gopkg.in/natefinch/lumberjack.v2"
@@ -37,7 +37,7 @@ func initLog() {
 	viper.Set("log.level", level.String())
 
 	log.SetLevel(level)
-	log.SetFormatter(&log.TextFormatter{QuoteCharacter: "`"})
+	log.SetFormatter(&log.TextFormatter{})
 	//		log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(io.MultiWriter(writers...))
 

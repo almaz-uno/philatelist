@@ -11,7 +11,7 @@ import (
 
 	"bitbucket.org/CuredPlumbum/philatelist/imagesearch"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
 )
 

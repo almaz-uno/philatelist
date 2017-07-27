@@ -10,5 +10,4 @@ func mustBindPFlag(key string, flag *pflag.Flag) {
 	if err := viper.BindPFlag(key, flag); err != nil {
 		panic(err)
 	}
-	return
 }

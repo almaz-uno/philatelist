@@ -1,7 +1,7 @@
-# This is Atlassian CI configuration file for Duet Proxy application
+# This is Atlassian CI configuration
 # Check https://bitbucket-pipelines.atlassian.io/validator for quick information
 
-image: golang:1.7
+image: golang:1.8
 
 pipelines:
   default:
@@ -14,4 +14,4 @@ pipelines:
           - cd "${PACKAGE_PATH}"
           - export BUILD_COMMIT=${BITBUCKET_COMMIT}
           - export BUILD_BRANCH=${BITBUCKET_BRANCH}
-          - make info clean lint gocov-report distrib
+          - make info clean lint gocov-report distr
